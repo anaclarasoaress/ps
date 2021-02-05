@@ -36,6 +36,9 @@ public class Funcionario implements Serializable {
 	@Column(name = "NU_IDADE")
 	private Integer idade;
 
+
+
+	
 	public Integer getId() {
 		return id;
 	}
@@ -83,5 +86,9 @@ public class Funcionario implements Serializable {
 	public void setIdade(Integer idade) {
 		this.idade = idade;
 	}
+
+	public Funcionario() {
+	}
+
 
 }

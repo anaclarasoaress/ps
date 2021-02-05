@@ -42,6 +42,27 @@ public class FuncionarioService {
 	}
 
 	/**
+	 * Lista todos os Funcionarios
+	 * 
+	 * @return response 200 (OK) - Conseguiu listar
+	 * @throws Exception
+	 */
+	@Path("/lista")
+	@Produces(MediaType.APPLICATION_JSON)
+	@GET
+	public Response FuncionarioRead() throws Exception {
+		List<Funcionario> Funcionarios = new ArrayList<Funcionario>();
+		try {
+			Funcionarios = dao.getAll();
+			GenericEntity<List<Funcionario>> entity = new GenericEntity<List<Funcionario>>(Funcionarios) {};
+
+			return Response.ok(entity).build();
+		} catch (Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Funcionarios").build();
+		}	
+	}
+
+	/**
 	 * Adiciona novo Funcionario
 	 * 
 	 * @param Funcionario: Novo Funcionario
@@ -52,29 +73,16 @@ public class FuncionarioService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@POST
 	public Response FuncionarioCreate(Funcionario Funcionario) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
-	}
-
-	/**
-	 * Lista todos os Funcionarios
-	 * 
-	 * @return response 200 (OK) - Conseguiu listar
-	 */
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
-	@GET
-	public Response FuncionarioRead() {
-		List<Funcionario> Funcionarios = new ArrayList<>();
 		try {
-			Funcionarios = dao.getAll();
-		} catch (Exception e) {
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar Funcionarios").build();
-		}
+			FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+			funcionarioDAO.save(Funcionario);
 
-		GenericEntity<List<Funcionario>> entity = new GenericEntity<List<Funcionario>>(Funcionarios) {
-		};
-		return Response.status(Status.OK).entity(entity).build();
+		return Response.status(Status.OK).build();
+		} catch (Exception e){	
+			return Response.status(Status.NOT_IMPLEMENTED).entity("Erro ao adicionar Funcionarios").build();
+		}	
 	}
+
 
 	/**
 	 * Atualiza um Funcionario
@@ -88,7 +96,14 @@ public class FuncionarioService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@PUT
 	public Response FuncionarioUpdate(@PathParam("id") Integer id, Funcionario Funcionario) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+		try {
+			FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+			funcionarioDAO.update(Funcionario);
+
+			return Response.status(Status.OK).build();
+		} catch (Exception e) {
+			return Response.status(Status.NOT_IMPLEMENTED).entity("Erro ao atualizar Funcionarios").build();
+		}	
 	}
 
 	/**
@@ -101,7 +116,14 @@ public class FuncionarioService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@DELETE
 	public Response FuncionarioDelete(@PathParam("id") Integer id) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+		try {
+			FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+			funcionarioDAO.delete(id);
+
+			return Response.status(Status.OK).build();
+		} catch (Exception e) {
+			return Response.status(Status.NOT_IMPLEMENTED).build();
+		}	
 	}
 
 }
